@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Sign Me Up</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="email">Email:</string>
+    <string name="ios_development">iOS Development</string>
+    <string name="android_development">Android Development</string>
+    <string name="php_development">PHP Development</string>
+    <string name="sign_me_up">Sign Me Up!</string>
 </resources>

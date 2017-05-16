@@ -91,7 +91,7 @@
             android:id="@+id/iOSDevelopmentEvent"
             android:text="@string/ios_development"
             android:layout_marginLeft="100dp"
-            android:onClick="onCheckboxClicked"/>
+            />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
             android:id="@+id/androidDevelopmentEvent"
             android:text="@string/android_development"
             android:layout_marginLeft="100dp"
-            android:onClick="onCheckboxClicked"/>
+            />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
             android:id="@+id/phpDevelopmentEvent"
             android:text="@string/php_development"
             android:layout_marginLeft="100dp"
-            android:onClick="onCheckboxClicked"/>
+            />
 
     </LinearLayout>
 

@@ -25,6 +25,8 @@ public class UserTable {
     public static final String KEY_EMAIL = "emailAddress";
     public static final int INDEX_EMAIL = 4;
 
+    
+
     public static final String DATABASE_CREATE = "create table " + TABLE_NAME + " (" +
             KEY_ID + " integer primary key autoincrement, " +
             KEY_FIRST_NAME + " text not null, " +

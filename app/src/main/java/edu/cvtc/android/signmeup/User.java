@@ -24,6 +24,16 @@ public class User {
         phone = "";
         email = "";
 
+
+    }
+
+    public User(final String firstName, final String lastName, final String phone, final String email) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+
     }
 
     public User(final String firstName, final String lastName, final String phone, final String email, final long id) {
@@ -74,12 +84,6 @@ public class User {
     public void setId(final long id) {
         this.id = id;
     }
-
-//    @Override
-//    public boolean eqauls(Object object) {
-//        return (object instanceof User)
-//                && ((User) object).getId() == id;
-//    }
 
 
 }

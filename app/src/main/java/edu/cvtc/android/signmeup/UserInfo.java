@@ -1,9 +1,15 @@
 package edu.cvtc.android.signmeup;
 
-import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +19,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class UserInfo extends AppCompatActivity implements View.OnClickListener{
+public class UserInfo extends AppCompatActivity implements View.OnClickListener, UserView.OnUserChangeListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private EditText firstNameEditText;
     private EditText lastNameEditText;
@@ -31,6 +37,9 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
     private static final String PHONE = "phone";
     private static final String EMAIL = "email";
 
+    private static final int LOADER_ID = 1;
+    private CursorAdapter userCursorAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +55,10 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
         phpDevelopment = (CheckBox) findViewById(R.id.phpDevelopmentEvent);
 
         signUpButton = (Button) findViewById(R.id.signMeUpButton);
-
         signUpButton.setOnClickListener(this);
+
     }
+
 
     @Override
     public void onClick(View view) {
@@ -61,9 +71,6 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
         final boolean iOSDev = iOSDevelopment.isChecked();
         final boolean androidDev = androidDevelopment.isChecked();
         final boolean phpDev = phpDevelopment.isChecked();
-
-//        boolean checked = ((CheckBox) view).isChecked();
-
 
         if (firstName != null && !firstName.isEmpty()
                 && lastName != null && !lastName.isEmpty()
@@ -78,32 +85,6 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
             intent.putExtra("phone", phone);
             intent.putExtra("email", email);
 
-//            switch (view.getId()) {
-//                case R.id.iOSDevelopmentEvent:
-//                    if (true) {
-//                        intent.putExtra("iOSDevelopment", iOSDev);
-//                    } else {
-//                        //do nothing
-//                    }
-//                    break;
-//                case R.id.androidDevelopmentEvent:
-//                    if (true) {
-//                        intent.putExtra("androidDevelopment", androidDev);
-//                    } else {
-//                        // do nothing
-//                    }
-//                    break;
-//                case R.id.phpDevelopmentEvent:
-//                    if (true) {
-//                        intent.putExtra("phpDevelopment", phpDev);
-//                    } else {
-//                        // do nothing
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-
             if (iOSDev == true) {
                 intent.putExtra("iOSDevelopment", iOSDevelopment.getText().toString());
             }
@@ -115,6 +96,7 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
                 intent.putExtra("phpDevelopment", phpDevelopment.getText().toString());
             }
 
+
             startActivity(intent);
 
         } else {
@@ -123,6 +105,7 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
 
         }
 
+        addUserFromEditText();
         hideSoftKeyboard();
 
     }
@@ -177,6 +160,97 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
             final InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void addUser(final User user) {
+
+        final ContentValues contentValues = setUpContentValues(user);
+
+        Uri uri = Uri.parse(UserContentProvider.CONTENT_URI + "/user/" + user.getId());
+        uri = getContentResolver().insert(uri, contentValues);
+
+        long id = Long.parseLong(uri.getLastPathSegment());
+        user.setId(id);
+
+    }
+
+    private void addUserFromEditText() {
+
+        final String firstName = firstNameEditText.getText().toString().trim();
+        final String lastName = lastNameEditText.getText().toString().trim();
+        final String phone = phoneNumberEditText.getText().toString().trim();
+        final String email = emailAddressEditText.getText().toString().trim();
+
+        if (firstName != null && !firstName.isEmpty()
+                && lastName != null && !lastName.isEmpty()
+                && phone != null && !phone.isEmpty()
+                && email != null && !email.isEmpty()) {
+
+            addUser(new User(firstName, lastName, phone, email));
+
+
+        } else {
+
+            Toast.makeText(this, "You must enter all fields and check at least one checkbox", Toast.LENGTH_SHORT).show();
+
+        }
+
+        hideSoftKeyboard();
+
+    }
+
+    @Override
+    public void onUserChanged(UserView view, User user) {
+
+        final Uri uri = Uri.parse(UserContentProvider.CONTENT_URI + "/user/" + user.getId());
+        getContentResolver().update(uri, setUpContentValues(user), null, null);
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        final String[] projection = { UserTable.KEY_ID, UserTable.KEY_FIRST_NAME, UserTable.KEY_LAST_NAME, UserTable.KEY_PHONE, UserTable.KEY_EMAIL};
+
+        final Uri uri = Uri.parse(UserContentProvider.CONTENT_URI + "/user/" + User.PHONE);
+
+
+        final CursorLoader cursorLoader = new CursorLoader(this, uri, projection, null, null, null);
+
+        return cursorLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        userCursorAdapter.swapCursor(data);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        userCursorAdapter.swapCursor(null);
+
+    }
+
+    private void reloadData() {
+
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+
+    }
+
+    private ContentValues setUpContentValues(final User user) {
+
+        final ContentValues contentValues = new ContentValues();
+
+        contentValues.put(UserTable.KEY_FIRST_NAME, user.getFirstName());
+        contentValues.put(UserTable.KEY_LAST_NAME, user.getLastName());
+        contentValues.put(UserTable.KEY_PHONE, user.getPhone());
+        contentValues.put(UserTable.KEY_EMAIL, user.getEmail());
+
+        return contentValues;
+
     }
 
 }

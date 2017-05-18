@@ -31,7 +31,7 @@ public class UserContentProvider extends ContentProvider {
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         uriMatcher.addURI(AUTHORITY, BASE_PATH + "/user/#", UPDATE);
-
+        uriMatcher.addURI(AUTHORITY, BASE_PATH + "/filter/#", QUERY);
     }
 
     @Override
@@ -48,8 +48,20 @@ public class UserContentProvider extends ContentProvider {
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(UserTable.TABLE_NAME);
 
-        //final int uriCode = uriMatcher.match(uri);
+        final int uriCode = uriMatcher.match(uri);
 
+        switch (uriCode) {
+            case QUERY:
+                final String filter = uri.getLastPathSegment();
+                if(!filter.equals("" + User.PHONE)) {
+                    queryBuilder.appendWhere(UserTable.KEY_PHONE + "=" + filter);
+                } else {
+                    selection = null;
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown Uri: " + uri);
+        }
 
         final SQLiteDatabase database = userDatabaseHelper.getReadableDatabase();
         final Cursor cursor = queryBuilder.query(database, projection, selection, null, null, null, null);

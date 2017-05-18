@@ -1,15 +1,30 @@
 package edu.cvtc.android.signmeup;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
  * Created by Greg on 5/17/2017.
  */
 
-public class SignUpConformation extends Activity {
+public  class SignUpConformation extends AppCompatActivity  implements UserView.OnUserChangeListener, LoaderManager.LoaderCallbacks<Cursor> {
+
+
+    private ListView userListView;
+
+    private UserCursorAdapter userCursorAdapter;
+
+    private static final int LOADER_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +35,12 @@ public class SignUpConformation extends Activity {
         setContentView(R.layout.activity_sign_up_conformation);
 
         final TextView conformationTextView = (TextView) findViewById(R.id.conformationTextView);
+        Log.d("confo text view", "value: " + conformationTextView);
+        userListView = (ListView) findViewById(R.id.userListView);
+        userListView.setLongClickable(true);
+        userListView.setAdapter(userCursorAdapter);
+
+
 
         final Bundle bundle = getIntent().getExtras();
 
@@ -111,4 +132,25 @@ public class SignUpConformation extends Activity {
 
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        userCursorAdapter.setOnUserChangeListener(this);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onUserChanged(UserView view, User user) {
+
+    }
 }

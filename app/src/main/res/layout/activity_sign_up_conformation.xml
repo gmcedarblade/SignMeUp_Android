@@ -9,8 +9,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/conformationTextView"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:text="@string/test_placeholder"
         android:textAlignment="center"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userListView"
+        android:layout_below="@+id/conformationTextView">
+
+    </ListView>
 
 </RelativeLayout>

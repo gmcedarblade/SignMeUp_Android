@@ -1,5 +1,7 @@
 package edu.cvtc.android.signmeup;
 
+import android.database.sqlite.SQLiteDatabase;
+
 /**
  * Created by Greg on 5/17/2017.
  */
@@ -27,6 +29,22 @@ public class UserTable {
             KEY_ID + " integer primary key autoincrement, " +
             KEY_FIRST_NAME + " text not null, " +
             KEY_LAST_NAME + " text not null, " +
-            KEY_PHONE + " text not null, "
+            KEY_PHONE + " text not null, " +
+            KEY_EMAIL + " text not null);";
 
+    public static final String DATABASE_DROP = "drop table if exists " + TABLE_NAME;
+
+
+    public static void onCreate(final SQLiteDatabase database) {
+
+        database.execSQL(DATABASE_CREATE);
+
+    }
+
+    public static void onUpgrade(final SQLiteDatabase database, int oldVersion, int newVersion) {
+
+        database.execSQL(DATABASE_DROP);
+        onCreate(database);
+
+    }
 }

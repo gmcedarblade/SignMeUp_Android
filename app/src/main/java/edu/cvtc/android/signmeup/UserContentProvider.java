@@ -30,7 +30,7 @@ public class UserContentProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        uriMatcher.addURI(AUTHORITY, BASE_PATH, + "/user/#", UPDATE);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH + "/user/#", UPDATE);
 
     }
 
@@ -99,7 +99,7 @@ public class UserContentProvider extends ContentProvider {
                 rowsDeleted = database.delete(UserTable.TABLE_NAME, UserTable.KEY_ID + "=" + id, null);
                 break;
             default:
-                throw new IllegalArgumentException("Unknown Uri: " uri);
+                throw new IllegalArgumentException("Unknown Uri: " + uri);
 
         }
 
@@ -129,12 +129,14 @@ public class UserContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
 
-                if (rowsUpdated > 0) {
-                    getContext().getContentResolver().notifyChange(uri, null);
-                }
-                return rowsUpdated;
 
         }
+
+
+        if (rowsUpdated > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
 
 
     }

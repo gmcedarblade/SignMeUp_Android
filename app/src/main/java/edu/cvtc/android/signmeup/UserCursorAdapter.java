@@ -13,9 +13,17 @@ import android.view.ViewGroup;
 public class UserCursorAdapter extends CursorAdapter {
 
 
+    private UserView.OnUserChangeListener onUserChangeListener;
+
     public UserCursorAdapter(Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
+
+    }
+
+    public void setOnUserChangeListener(final UserView.OnUserChangeListener onUserChangeListener) {
+
+        this.onUserChangeListener = onUserChangeListener;
 
     }
 
@@ -29,13 +37,13 @@ public class UserCursorAdapter extends CursorAdapter {
                 cursor.getString(UserTable.INDEX_EMAIL),
                 cursor.getLong(UserTable.INDEX_ID));
 
-        //final UserInfo userInfo = new UserInfo(context, user);
+        final UserView userView = new UserView(context, user);
 
-        //return userInfo;
+        userView.setOnUserChangeListener(onUserChangeListener);
+
+        return userView;
 
 
-
-        return null;
     }
 
     @Override
@@ -47,6 +55,10 @@ public class UserCursorAdapter extends CursorAdapter {
                 cursor.getString(UserTable.INDEX_PHONE),
                 cursor.getString(UserTable.INDEX_EMAIL),
                 cursor.getLong(UserTable.INDEX_ID));
+
+        ((UserView) view).setOnUserChangeListener(null);
+        ((UserView) view).setUser(user);
+        ((UserView) view).setOnUserChangeListener(onUserChangeListener);
 
     }
 }

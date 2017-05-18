@@ -1,10 +1,13 @@
 package edu.cvtc.android.signmeup;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -65,7 +68,8 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
         if (firstName != null && !firstName.isEmpty()
                 && lastName != null && !lastName.isEmpty()
                 && phone != null && !phone.isEmpty()
-                && email != null && !email.isEmpty()) {
+                && email != null && !email.isEmpty()
+                && (iOSDev == true || androidDev == true || phpDev == true)) {
 
             final Intent intent = new Intent(getApplicationContext(), SignUpConformation.class);
 
@@ -107,6 +111,8 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
             Toast.makeText(getApplicationContext(), "All fields must be completed...", Toast.LENGTH_SHORT).show();
 
         }
+
+        hideSoftKeyboard();
 
     }
 
@@ -151,4 +157,15 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
         emailAddressEditText.setText(emailText);
 
     }
+
+    private void hideSoftKeyboard() {
+
+        final View view = getCurrentFocus();
+        if (view != null) {
+
+            final InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 }

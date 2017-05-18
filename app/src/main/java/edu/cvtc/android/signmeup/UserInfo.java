@@ -78,30 +78,41 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener{
             intent.putExtra("phone", phone);
             intent.putExtra("email", email);
 
-            switch (view.getId()) {
-                case R.id.iOSDevelopmentEvent:
-                    if (true) {
-                        intent.putExtra("iOSDevelopment", iOSDev);
-                    } else {
-                        //do nothing
-                    }
-                    break;
-                case R.id.androidDevelopmentEvent:
-                    if (true) {
-                        intent.putExtra("androidDevelopment", androidDev);
-                    } else {
-                        // do nothing
-                    }
-                    break;
-                case R.id.phpDevelopmentEvent:
-                    if (true) {
-                        intent.putExtra("phpDevelopment", phpDev);
-                    } else {
-                        // do nothing
-                    }
-                    break;
-                default:
-                    break;
+//            switch (view.getId()) {
+//                case R.id.iOSDevelopmentEvent:
+//                    if (true) {
+//                        intent.putExtra("iOSDevelopment", iOSDev);
+//                    } else {
+//                        //do nothing
+//                    }
+//                    break;
+//                case R.id.androidDevelopmentEvent:
+//                    if (true) {
+//                        intent.putExtra("androidDevelopment", androidDev);
+//                    } else {
+//                        // do nothing
+//                    }
+//                    break;
+//                case R.id.phpDevelopmentEvent:
+//                    if (true) {
+//                        intent.putExtra("phpDevelopment", phpDev);
+//                    } else {
+//                        // do nothing
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+
+            if (iOSDev == true) {
+                intent.putExtra("iOSDevelopment", iOSDevelopment.getText().toString());
+            }
+            if (androidDev == true) {
+                intent.putExtra("androidDevelopment", androidDevelopment.getText().toString());
+            }
+
+            if (phpDev == true) {
+                intent.putExtra("phpDevelopment", phpDevelopment.getText().toString());
             }
 
             startActivity(intent);

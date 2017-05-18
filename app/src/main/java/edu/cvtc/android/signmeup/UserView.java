@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**

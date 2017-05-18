@@ -234,12 +234,6 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener,
 
     }
 
-    private void reloadData() {
-
-        getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
-
-    }
-
     private ContentValues setUpContentValues(final User user) {
 
         final ContentValues contentValues = new ContentValues();

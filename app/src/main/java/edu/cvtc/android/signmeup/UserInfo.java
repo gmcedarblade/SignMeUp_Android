@@ -37,7 +37,7 @@ public class UserInfo extends AppCompatActivity implements View.OnClickListener,
     private static final String PHONE = "phone";
     private static final String EMAIL = "email";
 
-    private static final int LOADER_ID = 1;
+
     private CursorAdapter userCursorAdapter;
 
     @Override

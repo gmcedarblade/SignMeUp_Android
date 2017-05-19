@@ -24,7 +24,9 @@ public  class SignUpConformation extends AppCompatActivity  implements UserView.
 
     private UserCursorAdapter userCursorAdapter;
 
-    private static final int LOADER_ID = 1;
+    private String filter = User.PHONE;
+
+    private static final int LOADER_ID = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +128,9 @@ public  class SignUpConformation extends AppCompatActivity  implements UserView.
                         + "signing up for " + iOS + ", " + android + " and " + php);
 
             }
+
         }
 
-        //getSupportLoaderManager().initLoader(LOADER_ID, null, this);
-
-        //reloadData();
 
     }
 
@@ -149,7 +149,7 @@ public  class SignUpConformation extends AppCompatActivity  implements UserView.
                 UserTable.KEY_EMAIL
         };
 
-        final Uri uri = Uri.parse(UserContentProvider.CONTENT_URI + "/user/" + UserTable.KEY_PHONE);
+        final Uri uri = Uri.parse(UserContentProvider.CONTENT_URI + "/user/" + filter);
 
         final CursorLoader cursorLoader = new CursorLoader(this, uri, projection, null, null, null);
 

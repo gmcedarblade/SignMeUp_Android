@@ -24,7 +24,6 @@ public class User {
         phone = "";
         email = "";
 
-
     }
 
     public User(final String firstName, final String lastName, final String phone, final String email) {

@@ -54,7 +54,7 @@ public class UserContentProvider extends ContentProvider {
             case QUERY:
                 final String filter = uri.getLastPathSegment();
                 if(!filter.equals("" + User.PHONE)) {
-                    queryBuilder.appendWhere(UserTable.KEY_PHONE + "=" + filter);
+                    queryBuilder.appendWhere(UserTable.KEY_ID + "=" + filter);
                 } else {
                     selection = null;
                 }

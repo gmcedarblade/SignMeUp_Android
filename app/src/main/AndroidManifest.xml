@@ -2,11 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.cvtc.android.signmeup">
 
+    <!-- http://www.ghonline.com/graysharborcounty/grays-harbor-sign-up.jpg: credit for icon-->
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/grays_harbor_sign_up"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/grays_harbor_sign_up"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UserInfo">
@@ -16,6 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUpConformation"></activity>
+        <activity android:name=".UserView"></activity>
+        <provider
+            android:authorities="edu.cvtc.android.signmeup.provider"
+            android:name=".UserContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
